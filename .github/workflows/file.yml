@@ -1,11 +1,35 @@
-name: Hello World Action
+name: Manual Workflow
 
 on:
   workflow_dispatch:
 
 jobs:
-  hello_world:
+  manual_input:
     runs-on: ubuntu-latest
     steps:
+      - name: Ask for User Input
+        run: |
+          echo "Enter Domain Name:"
+          read domain_name
+          echo "Enter Secret:"
+          read secret
+          echo "Enter Service Name:"
+          read service_name
+          echo "::set-output name=domain_name::$domain_name"
+          echo "::set-output name=secret::$secret"
+          echo "::set-output name=service_name::$service_name"
+
+      - name: Use User Input
+        id: user_input
+        env:
+          DOMAIN_NAME: ${{ steps.manual_input.outputs.domain_name }}
+          SECRET: ${{ steps.manual_input.outputs.secret }}
+          SERVICE_NAME: ${{ steps.manual_input.outputs.service_name }}
+        run: |
+          echo "Domain Name: $DOMAIN_NAME"
+          echo "Secret: $SECRET"
+          echo "Service Name: $SERVICE_NAME"
+
       - name: Hello World
-        run: echo "Hello, World!"
+        run: |
+          echo "Hello, World! This is the $SERVICE_NAME service running at $DOMAIN_NAME using secret $SECRET."
