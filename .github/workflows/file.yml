@@ -2,29 +2,27 @@ name: Manual Workflow
 
 on:
   workflow_dispatch:
+    inputs:
+      domain_name:
+        description: 'Domain Name'
+        required: true
+      secret:
+        description: 'Secret'
+        required: true
+      service_name:
+        description: 'Service Name'
+        required: true
 
 jobs:
   manual_input:
     runs-on: ubuntu-latest
     steps:
-      - name: Ask for User Input
-        run: |
-          echo "Enter Domain Name:"
-          read domain_name
-          echo "Enter Secret:"
-          read secret
-          echo "Enter Service Name:"
-          read service_name
-          echo "::set-output name=domain_name::$domain_name"
-          echo "::set-output name=secret::$secret"
-          echo "::set-output name=service_name::$service_name"
-
       - name: Use User Input
         id: user_input
         env:
-          DOMAIN_NAME: ${{ steps.manual_input.outputs.domain_name }}
-          SECRET: ${{ steps.manual_input.outputs.secret }}
-          SERVICE_NAME: ${{ steps.manual_input.outputs.service_name }}
+          DOMAIN_NAME: ${{ github.event.inputs.domain_name }}
+          SECRET: ${{ github.event.inputs.secret }}
+          SERVICE_NAME: ${{ github.event.inputs.service_name }}
         run: |
           echo "Domain Name: $DOMAIN_NAME"
           echo "Secret: $SECRET"
