@@ -6,12 +6,15 @@ on:
       domain_name:
         description: 'Domain Name'
         required: true
+        options: ['example.com', 'example.org', 'example.net']
       secret:
         description: 'Secret'
         required: true
+        options: ['secret1', 'secret2', 'secret3']
       service_name:
         description: 'Service Name'
         required: true
+        options: ['service1', 'service2', 'service3']
 
 jobs:
   manual_input:
